@@ -12,11 +12,6 @@ window.onload = function() {
     context.fill();
 
     context.beginPath();
-    context.rect(125,25,50,50);
-    context.fillStyle = "#800";
-    context.fill();
-
-    context.beginPath();
     context.rect(25,125,50,50);
     context.strokeStyle = "#800";
     context.lineWidth = 4;
