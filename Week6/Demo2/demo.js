@@ -55,61 +55,61 @@ function setup() {
 	}
 
 
-    var C0 = function(t) {
-        var x = t;
-        var y = t*t;
-        return [x,y];
-    }
-
-    var C1a = function(t) { // discontinuity at t=1
-        var x = t*(t-1);
-        var y = t;
-        return [x,y];
-    }
-
-    var C1b = function(t) { // C0 continuity at t=1
-        var x = t*t-3*t+3;
-        var y = t;
-        return [x,y];
-    }
-
-    var C1c = function(t) { // C1 continuity at t=1
-        var x = t;
-        var y = -t*t+4*t-2;
-        return [x,y];
-    }
-
-    var C1d = function(t) { // G1 continuity at t=1
-        var x = 0.25*(t+3);
-        var y = -0.0625*(t+3)*(t+3)+(t+3)-2;
-        return [x,y];
-    }
-
-    var C1e = function(t) { // C2 continuity at t=1
-        var x = t;
-        var y = t*t-2*(t-1)*(t-1)*(t-1);
-        return [x,y];
-    }
-
-    var C1 = C1e;
-      
-	var Cspiral = function(t) {
-        if(t<1) {
-          return C0(t);
-        }else{
-        return C1(t);
-        }
+	var C0 = function(t) {
+            var x = t;
+            var y = t*t;
+            return [x,y];
 	}
 
-    function drawTrajectory(t_begin,t_end,intervals,C,Tx,color) {
+	var C1a = function(t) { // discontinuity at t=1
+            var x = t*(t-1);
+            var y = t;
+            return [x,y];
+	}
+
+	var C1b = function(t) { // C0 continuity at t=1
+            var x = t*t-3*t+3;
+            var y = t;
+            return [x,y];
+	}
+
+	var C1c = function(t) { // C1 continuity at t=1
+            var x = t;
+            var y = -t*t+4*t-2;
+            return [x,y];
+	}
+
+	var C1d = function(t) { // G1 continuity at t=1
+            var x = 0.25*(t+3);
+            var y = -0.0625*(t+3)*(t+3)+(t+3)-2;
+            return [x,y];
+	}
+
+	var C1e = function(t) { // C2 continuity at t=1
+            var x = t;
+            var y = t*t-2*(t-1)*(t-1)*(t-1);
+            return [x,y];
+	}
+
+	var C1 = C1e;
+	
+	var Ccomp = function(t) {
+            if(t<1) {
+		return C0(t);
+            }else{
+		return C1(t);
+            }
+	}
+
+	function drawTrajectory(t_begin,t_end,intervals,C,Tx,color) {
 	    context.strokeStyle=color;
 	    context.beginPath();
-        moveToTx(C(t_begin),Tx);
-        for(var i=1;i<=intervals;i++){
-            var t=((intervals-i)/intervals)*t_begin+(i/intervals)*t_end;
-            lineToTx(C(t),Tx);
-        }
-        context.stroke();
+            moveToTx(C(t_begin),Tx);
+            for(var i=1;i<=intervals;i++){
+		var t=((intervals-i)/intervals)*t_begin+(i/intervals)*t_end;
+		lineToTx(C(t),Tx);
+            }
+            context.stroke();
 	}
 
 	// make sure you understand these    
@@ -124,7 +124,7 @@ function setup() {
 	drawTrajectory(0.0,1.0,100,C0,Tblue_to_canvas,"red");
 	drawTrajectory(1.0,2.0,100,C1,Tblue_to_canvas,"blue");
 	var Tgreen_to_blue = mat3.create();
-	mat3.fromTranslation(Tgreen_to_blue,Cspiral(tParam));
+	mat3.fromTranslation(Tgreen_to_blue,Ccomp(tParam));
 	var Tgreen_to_canvas = mat3.create();
 	mat3.multiply(Tgreen_to_canvas, Tblue_to_canvas, Tgreen_to_blue);
 	drawObject("green",Tgreen_to_canvas);
